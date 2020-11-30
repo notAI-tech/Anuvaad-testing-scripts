@@ -2,16 +2,24 @@ from anuvaad import Anuvaad
 
 models = {
         #'tam': Anuvaad('english-tamil'),
-        'tel': Anuvaad('english-telugu'),
+        #'tel': Anuvaad('english-telugu'),
         #'kan': Anuvaad('english-kannada'),
         #'mal': Anuvaad('english-malayalam'),
         #'mar': Anuvaad('english-marathi'),
-        #'hin':  Anuvaad('english-hindi')
+        'hin':  Anuvaad('english-hindi')
         }
 
 from tqdm import tqdm
 
 lines = open('english-telugu_tamil_hindi_kannada_malayalam_marathi.tatoeba-sentpairs.tsv').readlines()
+
+lines = [l for l in lines if l.strip().split('\t')[3] in models]
+
+if len(lines) >= 1000:
+    import random
+    random.seed(42)
+    random.shuffle(lines)
+    lines = lines[:1000]
 
 of = open(list(models.keys())[0] + '-results.tsv', 'w')
 of.write('SRC_ID\tTGT_ID\tSRC_LANG\tTGT_LANG\tSRC_SENT\tTGT_SENT\tPRED\n')
